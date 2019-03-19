@@ -10,6 +10,7 @@
 		46ACD7CA22417B25003D1D8B /* Reciplease.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46ACD7C022417B24003D1D8B /* Reciplease.framework */; };
 		46ACD7DB22417E66003D1D8B /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DA22417E66003D1D8B /* Recipe.swift */; };
 		46ACD7DD22417ED6003D1D8B /* RecipeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */; };
+		46ACD7E022417F7E003D1D8B /* RemoteRecipeLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		46ACD7D022417B25003D1D8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46ACD7DA22417E66003D1D8B /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLoader.swift; sourceTree = "<group>"; };
+		46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRecipeLoaderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7D022417B25003D1D8B /* Info.plist */,
+				46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 					};
 					46ACD7C822417B25003D1D8B = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -211,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46ACD7E022417F7E003D1D8B /* RemoteRecipeLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +410,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 78BZCUCGN3;
@@ -416,6 +422,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.christophebugnon.RecipleaseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -424,6 +431,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 78BZCUCGN3;
