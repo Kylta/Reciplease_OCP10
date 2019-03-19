@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		46ACD7CA22417B25003D1D8B /* Reciplease.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46ACD7C022417B24003D1D8B /* Reciplease.framework */; };
 		46ACD7DB22417E66003D1D8B /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DA22417E66003D1D8B /* Recipe.swift */; };
+		46ACD7DD22417ED6003D1D8B /* RecipeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +28,7 @@
 		46ACD7C922417B25003D1D8B /* RecipleaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipleaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46ACD7D022417B25003D1D8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46ACD7DA22417E66003D1D8B /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7C422417B24003D1D8B /* Info.plist */,
+				46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */,
 				46ACD7DA22417E66003D1D8B /* Recipe.swift */,
 			);
 			path = Reciplease;
@@ -191,6 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46ACD7DD22417ED6003D1D8B /* RecipeLoader.swift in Sources */,
 				46ACD7DB22417E66003D1D8B /* Recipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
