@@ -72,8 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7C422417B24003D1D8B /* Info.plist */,
-				46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */,
-				46ACD7DA22417E66003D1D8B /* Recipe.swift */,
+				46ACD7DE22417F42003D1D8B /* Recipe Feature */,
 			);
 			path = Reciplease;
 			sourceTree = "<group>";
@@ -84,6 +83,15 @@
 				46ACD7D022417B25003D1D8B /* Info.plist */,
 			);
 			path = RecipleaseTests;
+			sourceTree = "<group>";
+		};
+		46ACD7DE22417F42003D1D8B /* Recipe Feature */ = {
+			isa = PBXGroup;
+			children = (
+				46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */,
+				46ACD7DA22417E66003D1D8B /* Recipe.swift */,
+			);
+			path = "Recipe Feature";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
