@@ -85,6 +85,20 @@ class RemoteRecipeLoaderTests: XCTestCase {
         })
     }
 
+    func test_load_doesNotDeliversResultAfterSUTInstanceHasBeenDeallocated() {
+        let url = URL(string: "any-url.com")!
+        let client = HTTPClientSpy()
+        var sut: RemoteRecipeLoader? = RemoteRecipeLoader(url: url, client: client)
+
+        var capturedResults = [RemoteRecipeLoader.Result]()
+        sut?.load { capturedResults.append($0) }
+
+        sut = nil
+        client.complete(withStatusCode: 200, data: makeJSON())
+
+        XCTAssertTrue(capturedResults.isEmpty)
+    }
+
     fileprivate func makeSUT(url: URL = URL(string: "any-url.com")!, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteRecipeLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteRecipeLoader(url: url, client: client)
