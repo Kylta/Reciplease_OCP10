@@ -13,8 +13,6 @@ public enum LoadRecipeResult<Error: Swift.Error> {
     case failure(Error)
 }
 
-extension LoadRecipeResult: Equatable where Error: Equatable {}
-
 public protocol RecipeLoader {
     associatedtype Error: Swift.Error
     func load(completion: @escaping (LoadRecipeResult<Error>) -> Void)
