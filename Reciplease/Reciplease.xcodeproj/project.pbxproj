@@ -82,9 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7C422417B24003D1D8B /* Info.plist */,
-				46E02B9A22427D7400762219 /* HTTPClient.swift */,
-				46E02B9E22427DE600762219 /* RecipeItemMapper.swift */,
-				46E02B9C22427DAB00762219 /* RemoteRecipeLoader.swift */,
+				46E02BA022427E3000762219 /* Remote Loader */,
 				46ACD7DE22417F42003D1D8B /* Recipe Feature */,
 			);
 			path = Reciplease;
@@ -95,7 +93,7 @@
 			children = (
 				46ACD7D022417B25003D1D8B /* Info.plist */,
 				46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */,
-				46ACD80522427328003D1D8B /* recipe.json */,
+				46E02BA122427E4C00762219 /* JSON */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -107,6 +105,24 @@
 				46ACD7DA22417E66003D1D8B /* Recipe.swift */,
 			);
 			path = "Recipe Feature";
+			sourceTree = "<group>";
+		};
+		46E02BA022427E3000762219 /* Remote Loader */ = {
+			isa = PBXGroup;
+			children = (
+				46E02B9A22427D7400762219 /* HTTPClient.swift */,
+				46E02B9E22427DE600762219 /* RecipeItemMapper.swift */,
+				46E02B9C22427DAB00762219 /* RemoteRecipeLoader.swift */,
+			);
+			path = "Remote Loader";
+			sourceTree = "<group>";
+		};
+		46E02BA122427E4C00762219 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				46ACD80522427328003D1D8B /* recipe.json */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
