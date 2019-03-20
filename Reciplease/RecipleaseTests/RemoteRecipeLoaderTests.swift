@@ -36,12 +36,12 @@ public class RemoteRecipeLoader {
     public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { result in
             switch result {
-            case let .success(data, _):
-                if let root = try? JSONDecoder().decode(Root.self, from: data) {
-                    completion(.success(root.items))
-                } else {
-                    completion(.failure(.invalidData))
+            case let .success(data, response):
+                guard response.statusCode == 200,
+                    let root = try? JSONDecoder().decode(Root.self, from: data) else {
+                        return completion(.failure(.invalidData))
                 }
+                completion(.success(root.items))
             case .failure:
                 completion(.failure(.connectivity))
             }
@@ -71,7 +71,7 @@ public class HTTPClient {
         messages[index].completion(.failure(error))
     }
 
-    func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
+    func complete(withStatusCode code: Int, data: Data, at index: Int = 0) {
         let response = HTTPURLResponse(url: requestedURLs[index], statusCode: code, httpVersion: nil, headerFields: nil)!
         messages[index].completion(.success(data, response))
     }
@@ -119,7 +119,7 @@ class RemoteRecipeLoaderTests: XCTestCase {
 
         samples.enumerated().forEach { index, code in
             expect(sut, toCompleteWith: .failure(.invalidData), when: {
-                client.complete(withStatusCode: code, at: index)
+                client.complete(withStatusCode: code, data: makeJSON(), at: index)
             })
         }
     }
