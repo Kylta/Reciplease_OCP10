@@ -9,7 +9,7 @@
 import XCTest
 
 public enum HTTPClientResult {
-    case success(HTTPURLResponse)
+    case success(Data, HTTPURLResponse)
     case failure(Error)
 }
 
@@ -53,9 +53,9 @@ class HTTPClient {
         messages[index].completion(.failure(error))
     }
 
-    func complete(withStatusCode code: Int, at index: Int = 0) {
+    func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
         let response = HTTPURLResponse(url: requestedURLs[index], statusCode: code, httpVersion: nil, headerFields: nil)!
-        messages[index].completion(.success(response))
+        messages[index].completion(.success(data, response))
     }
 }
 
@@ -109,6 +109,17 @@ class RemoteRecipeLoaderTests: XCTestCase {
 
             XCTAssertEqual(capturedErrors, [.invalidData])
         }
+    }
+
+    func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
+        let (sut, client) = makeSUT()
+        var capturedErrors = [RemoteRecipeLoader.Error]()
+
+        sut.load { capturedErrors.append($0) }
+        let invalidJSON = Data(bytes: "invalidJSON".utf8)
+        client.complete(withStatusCode: 200, data: invalidJSON)
+
+        XCTAssertEqual(capturedErrors, [.invalidData])
     }
 
     func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClient) {
