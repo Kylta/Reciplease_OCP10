@@ -12,21 +12,29 @@ class RemoteRecipeLoader {
     let url: URL
     let client: HTTPClient
 
+    enum Error: Swift.Error {
+        case connectivity
+    }
+
     init(url: URL, client: HTTPClient) {
         self.url = url
         self.client = client
     }
 
-    func load() {
-        client.get(from: url)
+    func load(completion: @escaping (Error) -> Void) {
+        client.get(from: url) { _ in
+            completion(.connectivity)
+        }
     }
 }
 
 class HTTPClient {
     var requestedURLs = [URL]()
+    var completions = [(Error) -> Void]()
 
-    func get(from url: URL) {
+    func get(from url: URL, completion: @escaping (Error) -> Void) {
         requestedURLs.append(url)
+        completions.append(completion)
     }
 }
 
@@ -42,7 +50,7 @@ class RemoteRecipeLoaderTests: XCTestCase {
         let url = URL(string: "another-url.com")!
         let (sut, client) = makeSUT(url: url)
 
-        sut.load()
+        sut.load { _ in }
 
         XCTAssertEqual(client.requestedURLs, [url])
     }
@@ -51,10 +59,21 @@ class RemoteRecipeLoaderTests: XCTestCase {
         let url = URL(string: "another-url.com")!
         let (sut, client) = makeSUT(url: url)
 
-        sut.load()
-        sut.load()
+        sut.load { _ in }
+        sut.load { _ in }
 
         XCTAssertEqual(client.requestedURLs, [url, url])
+    }
+
+    func test_load_deliversErrorOnClientError() {
+        let (sut, client) = makeSUT()
+        var capturedErrors = [RemoteRecipeLoader.Error]()
+
+        sut.load { capturedErrors.append($0) }
+        let clientError = NSError(domain: "test", code: 0)
+        client.completions[0](clientError)
+
+        XCTAssertEqual(capturedErrors, [.connectivity])
     }
 
     func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClient) {
