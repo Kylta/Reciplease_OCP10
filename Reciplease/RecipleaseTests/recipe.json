@@ -1,0 +1,26 @@
+{
+    "matches": [{
+        "imageUrlsBySize": {
+            "90": "image-url.com"
+        },
+        "ingredients": [
+            "any ingredients"
+        ],
+        "id": "an id",
+        "recipeName": "a name",
+        "totalTimeInSeconds": 60,
+        "rating": 4
+    },
+    {
+        "imageUrlsBySize": {
+            "90": "another-image-url.com"
+        },
+        "ingredients": [
+            "another ingredients"
+        ],
+        "recipeName": "another name",
+        "totalTimeInSeconds": 600,
+        "rating": 1
+    }
+    ]
+}

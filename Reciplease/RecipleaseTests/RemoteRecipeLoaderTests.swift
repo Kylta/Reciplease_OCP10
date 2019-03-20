@@ -36,16 +36,24 @@ public class RemoteRecipeLoader {
     public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { result in
             switch result {
-            case let .success(data, response):
-                guard let _ = try? JSONSerialization.jsonObject(with: data),
-                    response.statusCode == 200 else {
-                    return completion(.failure(.invalidData))
+            case let .success(data, _):
+                if let root = try? JSONDecoder().decode(Root.self, from: data) {
+                    completion(.success(root.items))
+                } else {
+                    completion(.failure(.invalidData))
                 }
-                completion(.success([]))
             case .failure:
                 completion(.failure(.connectivity))
             }
         }
+    }
+}
+
+private struct Root: Decodable {
+    let items: [Recipe]
+
+    private enum CodingKeys: String, CodingKey {
+        case items = "matches"
     }
 }
 
@@ -134,10 +142,29 @@ class RemoteRecipeLoaderTests: XCTestCase {
         })
     }
 
+    func test_load_deliversItemsOn200HTTPResponseWithJSONItems() {
+        let (sut, client) = makeSUT()
+
+        let item1 = Recipe(name: "a name", ingredients: ["any ingredients"], id: "an id", rate: 4, time: 60, imageURL: URL(string: "image-url.com")!)
+
+        let item2 = Recipe(name: "another name", ingredients: ["another ingredients"], id: nil, rate: 1, time: 600, imageURL: URL(string: "another-image-url.com")!)
+
+        expect(sut: sut, whenCompleteWith: .success([item1, item2]), when: {
+            client.complete(withStatusCode: 200, data: makeJSON())
+        })
+    }
+
     func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClient) {
         let client = HTTPClient()
         let sut = RemoteRecipeLoader(url: url, client: client)
         return (sut, client)
+    }
+
+    fileprivate func makeJSON() -> Data {
+        let filePath = Bundle(for: type(of: self)).url(forResource: "recipe", withExtension: "json")!
+        let json = try! Data(contentsOf: filePath)
+
+        return json
     }
 
     func expect(sut: RemoteRecipeLoader, whenCompleteWith result: RemoteRecipeLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
