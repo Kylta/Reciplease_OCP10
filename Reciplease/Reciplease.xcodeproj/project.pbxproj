@@ -92,8 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7D022417B25003D1D8B /* Info.plist */,
-				46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */,
-				46E02BA122427E4C00762219 /* JSON */,
+				46E02BA422429F6100762219 /* Recipe API */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -123,6 +122,15 @@
 				46ACD80522427328003D1D8B /* recipe.json */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		46E02BA422429F6100762219 /* Recipe API */ = {
+			isa = PBXGroup;
+			children = (
+				46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */,
+				46E02BA122427E4C00762219 /* JSON */,
+			);
+			path = "Recipe API";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
