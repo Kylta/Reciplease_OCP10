@@ -36,8 +36,12 @@ public class RemoteRecipeLoader {
     public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { result in
             switch result {
-            case .success:
-                completion(.failure(.invalidData))
+            case let .success(data, response):
+                guard let _ = try? JSONSerialization.jsonObject(with: data),
+                    response.statusCode == 200 else {
+                    return completion(.failure(.invalidData))
+                }
+                completion(.success([]))
             case .failure:
                 completion(.failure(.connectivity))
             }
@@ -118,6 +122,15 @@ class RemoteRecipeLoaderTests: XCTestCase {
         expect(sut: sut, whenCompleteWith: .failure(.invalidData), when: {
             let invalidJSON = Data(bytes: "invalidJSON".utf8)
             client.complete(withStatusCode: 200, data: invalidJSON)
+        })
+    }
+
+    func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
+        let (sut, client) = makeSUT()
+
+        expect(sut: sut, whenCompleteWith: .success([]), when: {
+            let emptyListJSON = Data(bytes: "{\"matches\": []}".utf8)
+            client.complete(withStatusCode: 200, data: emptyListJSON)
         })
     }
 
