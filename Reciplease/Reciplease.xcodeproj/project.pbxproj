@@ -82,7 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7C422417B24003D1D8B /* Info.plist */,
-				46E02BA022427E3000762219 /* Remote Loader */,
+				46E02BA022427E3000762219 /* Recipe API */,
 				46ACD7DE22417F42003D1D8B /* Recipe Feature */,
 			);
 			path = Reciplease;
@@ -107,14 +107,14 @@
 			path = "Recipe Feature";
 			sourceTree = "<group>";
 		};
-		46E02BA022427E3000762219 /* Remote Loader */ = {
+		46E02BA022427E3000762219 /* Recipe API */ = {
 			isa = PBXGroup;
 			children = (
 				46E02B9A22427D7400762219 /* HTTPClient.swift */,
 				46E02B9E22427DE600762219 /* RecipeItemMapper.swift */,
 				46E02B9C22427DAB00762219 /* RemoteRecipeLoader.swift */,
 			);
-			path = "Remote Loader";
+			path = "Recipe API";
 			sourceTree = "<group>";
 		};
 		46E02BA122427E4C00762219 /* JSON */ = {
