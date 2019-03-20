@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class RemoteRecipeLoader {
+public class RemoteRecipeLoader: RecipeLoader {
     private let url: URL
     private let client: HTTPClient
 
