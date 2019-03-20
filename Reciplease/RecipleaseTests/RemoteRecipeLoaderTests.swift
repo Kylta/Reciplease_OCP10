@@ -88,13 +88,11 @@ class RemoteRecipeLoaderTests: XCTestCase {
 
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
-        var capturedErrors = [RemoteRecipeLoader.Error]()
 
-        sut.load { capturedErrors.append($0) }
-        let clientError = NSError(domain: "test", code: 0)
-        client.complete(with: clientError)
-
-        XCTAssertEqual(capturedErrors, [.connectivity])
+        expect(sut: sut, whenCompleteWith: .connectivity, when: {
+            let clientError = NSError(domain: "test", code: 0)
+            client.complete(with: clientError)
+        })
     }
 
     func test_load_deliversErrorOnNon200HTTPResponse() {
@@ -102,29 +100,34 @@ class RemoteRecipeLoaderTests: XCTestCase {
         let samples = [199, 201, 300, 400, 500]
 
         samples.enumerated().forEach { index, code in
-            var capturedErrors = [RemoteRecipeLoader.Error]()
-
-            sut.load { capturedErrors.append($0) }
-            client.complete(withStatusCode: code, at: index)
-
-            XCTAssertEqual(capturedErrors, [.invalidData])
+            expect(sut: sut, whenCompleteWith: .invalidData, when: {
+                client.complete(withStatusCode: code, at: index)
+            })
         }
     }
 
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
-        var capturedErrors = [RemoteRecipeLoader.Error]()
 
-        sut.load { capturedErrors.append($0) }
-        let invalidJSON = Data(bytes: "invalidJSON".utf8)
-        client.complete(withStatusCode: 200, data: invalidJSON)
-
-        XCTAssertEqual(capturedErrors, [.invalidData])
+        expect(sut: sut, whenCompleteWith: .invalidData, when: {
+            let invalidJSON = Data(bytes: "invalidJSON".utf8)
+            client.complete(withStatusCode: 200, data: invalidJSON)
+        })
     }
 
     func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClient) {
         let client = HTTPClient()
         let sut = RemoteRecipeLoader(url: url, client: client)
         return (sut, client)
+    }
+
+    func expect(sut: RemoteRecipeLoader, whenCompleteWith error: RemoteRecipeLoader.Error, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+        var capturedErrors = [RemoteRecipeLoader.Error]()
+
+        sut.load { capturedErrors.append($0) }
+
+        action()
+
+        XCTAssertEqual(capturedErrors, [error], file: file, line: line)
     }
 }
