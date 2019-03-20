@@ -37,11 +37,12 @@ public class RemoteRecipeLoader {
         client.get(from: url) { result in
             switch result {
             case let .success(data, response):
-                guard response.statusCode == 200,
-                    let root = try? JSONDecoder().decode(Root.self, from: data) else {
-                        return completion(.failure(.invalidData))
+                do {
+                    let items = try RecipeItemMapper.map(data, response)
+                    completion(.success(items))
+                } catch {
+                    completion(.failure(.invalidData))
                 }
-                completion(.success(root.items.map { $0.item }))
             case .failure:
                 completion(.failure(.connectivity))
             }
@@ -91,6 +92,15 @@ private struct RecipeItemMapper: Decodable {
         id = try container.decodeIfPresent(String.self, forKey: .id)
 
         imageURL = try imageURLContainer.decode(URL.self, forKey: .imageURL)
+    }
+
+    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [Recipe] {
+        guard response.statusCode == 200 else {
+            throw RemoteRecipeLoader.Error.invalidData
+        }
+
+        let root = try JSONDecoder().decode(Root.self, from: data)
+        return root.items.map { $0.item }
     }
 }
 
