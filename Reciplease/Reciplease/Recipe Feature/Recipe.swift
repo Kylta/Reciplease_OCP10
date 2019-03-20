@@ -25,30 +25,3 @@ public struct Recipe: Equatable {
         self.imageURL = imageURL
     }
 }
-
-extension Recipe: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case ingredients, id, imageUrlsBySize
-        case name = "recipeName"
-        case rate = "rating"
-        case time = "totalTimeInSeconds"
-    }
-
-    private enum ImageURLCodingKeys: String, CodingKey {
-        case imageURL = "90"
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let imageURLContainer = try container.nestedContainer(keyedBy: ImageURLCodingKeys.self, forKey: .imageUrlsBySize)
-
-        name = try container.decode(String.self, forKey: .name)
-        ingredients = try container.decode([String].self, forKey: .ingredients)
-        rate = try container.decode(Int.self, forKey: .rate)
-        time = try container.decode(Int.self, forKey: .time)
-
-        id = try container.decodeIfPresent(String.self, forKey: .id)
-
-        imageURL = try imageURLContainer.decode(URL.self, forKey: .imageURL)
-    }
-}

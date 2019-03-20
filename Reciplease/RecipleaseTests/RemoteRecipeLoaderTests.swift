@@ -41,7 +41,7 @@ public class RemoteRecipeLoader {
                     let root = try? JSONDecoder().decode(Root.self, from: data) else {
                         return completion(.failure(.invalidData))
                 }
-                completion(.success(root.items))
+                completion(.success(root.items.map { $0.item }))
             case .failure:
                 completion(.failure(.connectivity))
             }
@@ -50,10 +50,47 @@ public class RemoteRecipeLoader {
 }
 
 private struct Root: Decodable {
-    let items: [Recipe]
+    let items: [RecipeItemMapper]
 
     private enum CodingKeys: String, CodingKey {
         case items = "matches"
+    }
+}
+
+private struct RecipeItemMapper: Decodable {
+    let name: String
+    let ingredients: [String]
+    let id: String?
+    let rate: Int
+    let time: Int
+    let imageURL: URL
+    var item: Recipe {
+        return Recipe(name: name, ingredients: ingredients, id: id, rate: rate, time: time, imageURL: imageURL)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case ingredients, id, imageUrlsBySize
+        case name = "recipeName"
+        case rate = "rating"
+        case time = "totalTimeInSeconds"
+    }
+
+    private enum ImageURLCodingKeys: String, CodingKey {
+        case imageURL = "90"
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let imageURLContainer = try container.nestedContainer(keyedBy: ImageURLCodingKeys.self, forKey: .imageUrlsBySize)
+
+        name = try container.decode(String.self, forKey: .name)
+        ingredients = try container.decode([String].self, forKey: .ingredients)
+        rate = try container.decode(Int.self, forKey: .rate)
+        time = try container.decode(Int.self, forKey: .time)
+
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+
+        imageURL = try imageURLContainer.decode(URL.self, forKey: .imageURL)
     }
 }
 
