@@ -9,11 +9,6 @@
 import XCTest
 import Reciplease
 
-public enum HTTPClientResult {
-    case success(Data, HTTPURLResponse)
-    case failure(Error)
-}
-
 public class RemoteRecipeLoader {
     private let url: URL
     private let client: HTTPClient
@@ -106,7 +101,7 @@ private struct RecipeItemMapper: Decodable {
     }
 }
 
-public class HTTPClient {
+private class HTTPClientSpy: HTTPClient {
     var messages = [(url: URL, completion: (HTTPClientResult) -> Void)]()
     var requestedURLs: [URL] {
         return messages.map { $0.url }
@@ -202,8 +197,8 @@ class RemoteRecipeLoaderTests: XCTestCase {
         })
     }
 
-    func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClient) {
-        let client = HTTPClient()
+    fileprivate func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClientSpy) {
+        let client = HTTPClientSpy()
         let sut = RemoteRecipeLoader(url: url, client: client)
         return (sut, client)
     }
@@ -219,7 +214,7 @@ class RemoteRecipeLoaderTests: XCTestCase {
         return try! Data(contentsOf: filePath)
     }
 
-    func expect(_ sut: RemoteRecipeLoader, toCompleteWith result: RemoteRecipeLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+    fileprivate func expect(_ sut: RemoteRecipeLoader, toCompleteWith result: RemoteRecipeLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         var capturedResults = [RemoteRecipeLoader.Result]()
 
         sut.load { capturedResults.append($0) }

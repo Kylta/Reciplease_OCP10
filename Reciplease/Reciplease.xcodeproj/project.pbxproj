@@ -12,6 +12,7 @@
 		46ACD7DD22417ED6003D1D8B /* RecipeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */; };
 		46ACD7E022417F7E003D1D8B /* RemoteRecipeLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */; };
 		46ACD80622427328003D1D8B /* recipe.json in Resources */ = {isa = PBXBuildFile; fileRef = 46ACD80522427328003D1D8B /* recipe.json */; };
+		46E02B9B22427D7400762219 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E02B9A22427D7400762219 /* HTTPClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		46ACD7DC22417ED6003D1D8B /* RecipeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLoader.swift; sourceTree = "<group>"; };
 		46ACD7DF22417F7E003D1D8B /* RemoteRecipeLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRecipeLoaderTests.swift; sourceTree = "<group>"; };
 		46ACD80522427328003D1D8B /* recipe.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = recipe.json; sourceTree = "<group>"; };
+		46E02B9A22427D7400762219 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				46ACD7C422417B24003D1D8B /* Info.plist */,
+				46E02B9A22427D7400762219 /* HTTPClient.swift */,
 				46ACD7DE22417F42003D1D8B /* Recipe Feature */,
 			);
 			path = Reciplease;
@@ -212,6 +215,7 @@
 			files = (
 				46ACD7DD22417ED6003D1D8B /* RecipeLoader.swift in Sources */,
 				46ACD7DB22417E66003D1D8B /* Recipe.swift in Sources */,
+				46E02B9B22427D7400762219 /* HTTPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
