@@ -17,10 +17,7 @@ public class RemoteRecipeLoader {
         case invalidData
     }
 
-    public enum Result: Equatable {
-        case success([Recipe])
-        case failure(Error)
-    }
+    public typealias Result = LoadRecipeResult<Error>
 
     public init(url: URL, client: HTTPClient) {
         self.url = url
