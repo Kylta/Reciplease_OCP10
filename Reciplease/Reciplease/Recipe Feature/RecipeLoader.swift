@@ -8,12 +8,11 @@
 
 import Foundation
 
-public enum LoadRecipeResult<Error: Swift.Error> {
+public enum LoadRecipeResult {
     case success([Recipe])
     case failure(Error)
 }
 
 public protocol RecipeLoader {
-    associatedtype Error: Swift.Error
-    func load(completion: @escaping (LoadRecipeResult<Error>) -> Void)
+    func load(completion: @escaping (LoadRecipeResult) -> Void)
 }

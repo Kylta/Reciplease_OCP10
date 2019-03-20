@@ -61,7 +61,7 @@ internal struct RecipeItemMapper: Decodable {
     static func map(_ data: Data, _ response: HTTPURLResponse) -> RemoteRecipeLoader.Result {
         guard response.statusCode == OK_200,
             let root = try? JSONDecoder().decode(Root.self, from: data) else {
-                return .failure(.invalidData)
+                return .failure(RemoteRecipeLoader.Error.invalidData)
         }
 
         return .success(root.recipe)

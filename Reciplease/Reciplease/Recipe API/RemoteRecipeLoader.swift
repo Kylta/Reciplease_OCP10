@@ -17,7 +17,7 @@ public class RemoteRecipeLoader: RecipeLoader {
         case invalidData
     }
 
-    public typealias Result = LoadRecipeResult<Error>
+    public typealias Result = LoadRecipeResult
 
     public init(url: URL, client: HTTPClient) {
         self.url = url
@@ -32,7 +32,7 @@ public class RemoteRecipeLoader: RecipeLoader {
             case let .success(data, response):
                 completion(RecipeItemMapper.map(data, response))
             case .failure:
-                completion(.failure(.connectivity))
+                completion(.failure(Error.connectivity))
             }
         }
     }
