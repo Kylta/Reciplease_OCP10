@@ -94,8 +94,10 @@ private struct RecipeItemMapper: Decodable {
         imageURL = try imageURLContainer.decode(URL.self, forKey: .imageURL)
     }
 
+    static var OK_200: Int { return 200 }
+
     static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [Recipe] {
-        guard response.statusCode == 200 else {
+        guard response.statusCode == OK_200 else {
             throw RemoteRecipeLoader.Error.invalidData
         }
 
