@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum LoadRecipeResult {
+public enum LoadRecipeResult {
     case success([Recipe])
     case failure(Error)
 }
 
-protocol RecipeLoader {
+public protocol RecipeLoader {
     func load(completion: @escaping (LoadRecipeResult) -> Void)
 }

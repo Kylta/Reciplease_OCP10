@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct Recipe {
-    let name: String
-    let ingredientsList: [String]
-    let like: String
-    let time: String
-    let image: String
-    let id: String?
-    let rate: Int
+public struct Recipe: Equatable {
+    public let name: String
+    public let ingredientsList: [String]
+    public let like: String
+    public let time: String
+    public let image: String
+    public let id: String?
+    public let rate: Int
 }

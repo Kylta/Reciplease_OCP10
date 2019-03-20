@@ -7,39 +7,45 @@
 //
 
 import XCTest
+import Reciplease
 
 public enum HTTPClientResult {
     case success(Data, HTTPURLResponse)
     case failure(Error)
 }
 
-class RemoteRecipeLoader {
-    let url: URL
-    let client: HTTPClient
+public class RemoteRecipeLoader {
+    private let url: URL
+    private let client: HTTPClient
 
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case connectivity
         case invalidData
     }
 
-    init(url: URL, client: HTTPClient) {
+    public enum Result: Equatable {
+        case success([Recipe])
+        case failure(Error)
+    }
+
+    public init(url: URL, client: HTTPClient) {
         self.url = url
         self.client = client
     }
 
-    func load(completion: @escaping (Error) -> Void) {
+    public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { result in
             switch result {
             case .success:
-                completion(.invalidData)
+                completion(.failure(.invalidData))
             case .failure:
-                completion(.connectivity)
+                completion(.failure(.connectivity))
             }
         }
     }
 }
 
-class HTTPClient {
+public class HTTPClient {
     var messages = [(url: URL, completion: (HTTPClientResult) -> Void)]()
     var requestedURLs: [URL] {
         return messages.map { $0.url }
@@ -89,7 +95,7 @@ class RemoteRecipeLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
 
-        expect(sut: sut, whenCompleteWith: .connectivity, when: {
+        expect(sut: sut, whenCompleteWith: .failure(.connectivity), when: {
             let clientError = NSError(domain: "test", code: 0)
             client.complete(with: clientError)
         })
@@ -100,7 +106,7 @@ class RemoteRecipeLoaderTests: XCTestCase {
         let samples = [199, 201, 300, 400, 500]
 
         samples.enumerated().forEach { index, code in
-            expect(sut: sut, whenCompleteWith: .invalidData, when: {
+            expect(sut: sut, whenCompleteWith: .failure(.invalidData), when: {
                 client.complete(withStatusCode: code, at: index)
             })
         }
@@ -109,7 +115,7 @@ class RemoteRecipeLoaderTests: XCTestCase {
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
 
-        expect(sut: sut, whenCompleteWith: .invalidData, when: {
+        expect(sut: sut, whenCompleteWith: .failure(.invalidData), when: {
             let invalidJSON = Data(bytes: "invalidJSON".utf8)
             client.complete(withStatusCode: 200, data: invalidJSON)
         })
@@ -121,13 +127,13 @@ class RemoteRecipeLoaderTests: XCTestCase {
         return (sut, client)
     }
 
-    func expect(sut: RemoteRecipeLoader, whenCompleteWith error: RemoteRecipeLoader.Error, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
-        var capturedErrors = [RemoteRecipeLoader.Error]()
+    func expect(sut: RemoteRecipeLoader, whenCompleteWith result: RemoteRecipeLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+        var capturedResults = [RemoteRecipeLoader.Result]()
 
-        sut.load { capturedErrors.append($0) }
+        sut.load { capturedResults.append($0) }
 
         action()
 
-        XCTAssertEqual(capturedErrors, [error], file: file, line: line)
+        XCTAssertEqual(capturedResults, [result], file: file, line: line)
     }
 }
