@@ -85,10 +85,18 @@ class RemoteRecipeLoaderTests: XCTestCase {
         })
     }
 
-    fileprivate func makeSUT(url: URL = URL(string: "any-url.com")!) -> (sut: RemoteRecipeLoader, client: HTTPClientSpy) {
+    fileprivate func makeSUT(url: URL = URL(string: "any-url.com")!, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteRecipeLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteRecipeLoader(url: url, client: client)
+        trackForMemoryLeaks(instance: client, file: file, line: line)
+        trackForMemoryLeaks(instance: sut, file: file, line: line)
         return (sut, client)
+    }
+
+    func trackForMemoryLeaks(instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
+        addTeardownBlock { [weak instance] in
+            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leaks.", file: file, line: line)
+        }
     }
 
     fileprivate func makeItem(name: String, ingredients: [String], id: String? = nil, rate: Int, time: Int, imageURL: URL) -> Recipe {

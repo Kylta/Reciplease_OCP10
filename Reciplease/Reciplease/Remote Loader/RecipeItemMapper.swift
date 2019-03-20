@@ -12,6 +12,10 @@ internal struct RecipeItemMapper: Decodable {
     private struct Root: Decodable {
         let items: [RecipeItemMapper]
 
+        var recipe: [Recipe] {
+            return items.map { $0.item }
+        }
+
         private enum CodingKeys: String, CodingKey {
             case items = "matches"
         }
@@ -54,12 +58,12 @@ internal struct RecipeItemMapper: Decodable {
 
     static var OK_200: Int { return 200 }
 
-    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [Recipe] {
-        guard response.statusCode == OK_200 else {
-            throw RemoteRecipeLoader.Error.invalidData
+    static func map(_ data: Data, _ response: HTTPURLResponse) -> RemoteRecipeLoader.Result {
+        guard response.statusCode == OK_200,
+            let root = try? JSONDecoder().decode(Root.self, from: data) else {
+                return .failure(.invalidData)
         }
 
-        let root = try JSONDecoder().decode(Root.self, from: data)
-        return root.items.map { $0.item }
+        return .success(root.recipe)
     }
 }

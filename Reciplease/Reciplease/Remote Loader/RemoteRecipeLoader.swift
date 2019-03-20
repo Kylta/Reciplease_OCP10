@@ -31,12 +31,7 @@ public class RemoteRecipeLoader {
         client.get(from: url) { result in
             switch result {
             case let .success(data, response):
-                do {
-                    let items = try RecipeItemMapper.map(data, response)
-                    completion(.success(items))
-                } catch {
-                    completion(.failure(.invalidData))
-                }
+                completion(RecipeItemMapper.map(data, response))
             case .failure:
                 completion(.failure(.connectivity))
             }
